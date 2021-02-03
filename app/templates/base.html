@@ -31,6 +31,7 @@
         <div class="dropdown">
             <button onclick="myFunction()" class=dropbtn>{{ session['username'] }}</button>
             <div id="drop" class="dropdown-content">
+                <a href={{ url_for('user', _username=session['username']) }}>Profile</a>
                 <a href={{ url_for('logout') }}>Logout</a>
             </div>
         </div>

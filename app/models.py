@@ -1,3 +1,5 @@
+from datetime import date
+
 from app import db
 
 
@@ -8,10 +10,12 @@ class User(db.Model):
     username = db.Column(db.String(), unique=True, nullable=False)
     email = db.Column(db.String(), unique=True, nullable=False)
     modules = db.relationship('Module', back_populates='owner', lazy=True)
+    joined = db.Column(db.Date)
 
     def __init__(self, username, email):
         self.username = username
         self.email = email
+        self.joined = date.today()
 
     def __repr__(self):
         return f'<id {self.id}>'
@@ -47,59 +51,3 @@ class Module(db.Model):
             'source': self.source,
             'owner': self.owner.username,
         }
-
-
-# class TagCategory(db.Model):
-#     __tablename__ = 'tag_categories'
-#
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(), unique=True, nullable=False)
-#
-#     def __init__(self, name):
-#         self.name = name
-#
-#     def __repr__(self):
-#         return '<id ()>'.format(self.id)
-#
-#     def serialize(self):
-#         return {
-#             'id': self.id,
-#             'name': self.name
-#         }
-#
-#
-# class Tag(db.Model):
-#     __tablename__ = 'tags'
-#
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String())
-#     category = db.Column(db.Model(TagCategory))
-#
-#     def __init__(self, name, category):
-#         self.name = name
-#         self.category = category
-#
-#     def __repr__(self):
-#         return '<id ()>'.format(self.id)
-#
-#     def serialize(self):
-#         return {
-#             'id': self.id,
-#             'name': self.name,
-#             'category': self.category
-#         }
-#
-#
-# class ModuleTag(db.Model):
-#     __tablename__ = 'module_tags'
-#
-#     id = db.Column(db.Integer, primary_key=True)
-#     module = db.Column(db.Model(Module))
-#     category = db.Column(db.Model(TagCategory))
-#
-#     def __init__(self, module, category):
-#         self.module = module
-#         self.category = category
-#
-#     def __repr__(self):
-#         return '<id ()>'.format(self.id)

@@ -4,7 +4,7 @@
 <div>
     <img src="https://raw.githubusercontent{{ module.source[14:] }}/main/pic.png">
     <h1>{{ module.name }}</h1>
-    <p>Author: {{ module.owner.username }}</p>
+    <p>Author: <a href="/users/{{ module.owner.username }}">{{ module.owner.username }}</a></p>
     <p>{{ module.source }}</p>
 </div>
 {% endblock %}

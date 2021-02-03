@@ -18,7 +18,7 @@ def init(app: Flask, db: SQLAlchemy):
     def users():
         try:
             _users = User.query.all()
-            return jsonify([e.serialize() for e in _users])
+            return render_template("users.html", users=_users)
         except Exception as e:
             return str(e)
 
@@ -40,17 +40,25 @@ def init(app: Flask, db: SQLAlchemy):
         session.pop('username', None)
         return redirect(url_for('index'))
 
+    @app.route('/users/<_username>')
+    def user(_username):
+        try:
+            _user = User.query.filter_by(username=_username).first()
+            return render_template("user.html", user=_user)
+        except Exception as e:
+            return str(e)
+
     @app.route('/users/register', methods=['GET', 'POST'])
     def register():
         if request.method == 'POST':
-            username = request.form['username']
-            email = request.form['email']
+            _username = request.form['username']
+            _email = request.form['email']
             try:
-                user = User(
-                    username=username,
-                    email=email
+                _user = User(
+                    username=_username,
+                    email=_email
                 )
-                db.session.add(user)
+                db.session.add(_user)
                 db.session.commit()
                 session['username'] = request.form['username']
                 return redirect(url_for('index'))
@@ -71,16 +79,15 @@ def init(app: Flask, db: SQLAlchemy):
         if request.method == 'POST':
             if not session['username']:
                 return redirect(url_for('login'))
-            name = request.form['name']
-            source = request.form['source']
+            _name = request.form['name']
+            _source = request.form['source']
             try:
-                user = User.query.filter_by(username=session['username']).first()
-                print(user.modules)
-                user.modules += [Module(
-                    name=name,
-                    source=source
+                _user = User.query.filter_by(username=session['username']).first()
+                _user.modules += [Module(
+                    name=_name,
+                    source=_source
                 )]
-                db.session.add(user)
+                db.session.add(_user)
                 db.session.commit()
                 return redirect(url_for('marketplace'))
             except Exception as e:

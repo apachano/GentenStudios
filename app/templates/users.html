@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}User Directory{% endblock %}
+{% block body %}
+<div>
+    <h1>User Directory</h1>
+    {% for user in users %}
+        <div>
+            <a href="/users/{{ user.username }}"><h2>{{ user.username }}</h2></a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

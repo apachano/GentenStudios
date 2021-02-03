@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ user.name }}{% endblock %}
+{% block body %}
+<div>
+    <div>
+        <h1>{{ user.username }}</h1>
+        <p>Joined: {{ user.joined }}</p>
+    </div>
+    <div>
+        <h2>Modules:</h2>
+        {% for module in user.modules %}
+            <div>
+                <a href="/marketplace/{{ module.id }}"><h2>{{ module.name }}</h2></a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
